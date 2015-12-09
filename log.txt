@@ -1,0 +1,23 @@
+commit 1fe062eab7cc54f33d1429437be87d85bed3a65f
+Author: Scruf <ekozitski@hotmail.com>
+Date:   Wed Dec 9 13:05:35 2015 -0500
+
+    Final commit
+
+commit 3d77711168be9e3ab5e9723e69f3c7bb40e80b0b
+Author: Scruf <ekozitski@hotmail.com>
+Date:   Tue Dec 8 19:18:16 2015 -0500
+
+    Servant class is implemented
+
+commit ecc1c83f0505c4d4b03a19bde20b4318888f5622
+Author: Scruf <ekozitski@hotmail.com>
+Date:   Tue Dec 8 18:53:48 2015 -0500
+
+    First activity is finished
+
+commit 06aa89b514cb564f34918332b8bedd18c019a79e
+Author: Scruf <ekozitski@hotmail.com>
+Date:   Tue Dec 8 16:14:24 2015 -0500
+
+    Initial commit
