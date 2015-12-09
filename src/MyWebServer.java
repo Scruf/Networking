@@ -10,7 +10,7 @@ public class MyWebServer extends Thread{
            System.out.println("Server "+server.getInetAddress().getHostAddress()
            +" listening on port->"+server.getLocalPort());
            while(true){
-               new Echo(server.accept());
+               new Servant(server.accept());
                System.out.println(server.toString());
                server.close();
            }
