@@ -1,109 +1,80 @@
-/**
- * Created by scruf on 12/8/15.
- */
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
+/**
+ * Created by darren on 12/9/15.
+ */
+/**
+ * Created by scruf on 12/8/15.
+ */
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
 public class Solicitor {
 
-    public static InetAddress serverName;
-    public static int serverPort;
-    static Socket sock = null;
 
 
-    public static void main(String[] args) throws UnknownHostException{
 
-        serverName = InetAddress.getByName(args[0]);
-        serverPort = Integer.parseInt(args[1]);
-        try {
-            Socket s = new Socket(serverName, serverPort);
-            sock = s;
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+    public static void main(String[] args) throws IOException
+    {
+
+        Socket sock=null;
+        String serverName = " ";
+        int serverPort=0;
+        BufferedReader buffer = null;
+        PrintWriter printer = null;
+        String str ,line;
+
+        try{
+            if(args.length<2)
+                System.err.println("Invalid Number oof arguments");
+            else{
+                serverName = args[0];
+                serverPort=Integer.parseInt(args[1]);
+            }
+        }catch(Exception ex){
+            System.err.println("Invalid input");
         }
 
-        String request = null; // the request sent from the client
-        // Get I/O stream in/out from the socket;
-        PrintWriter out = null;
-        BufferedReader in = null;
-
-
-        try {
-            in = new BufferedReader (new InputStreamReader(sock.getInputStream()));
-            out = new PrintWriter(sock.getOutputStream(), true);
-
-            // print the message sent from the client onto the server
-            while (in.ready()) {
-                request = in.readLine();
-                System.out.println(request);
+        try
+        {
+            sock = new Socket(serverName, serverPort);
+            printer = new PrintWriter(sock.getOutputStream(), true);
+            buffer = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+        }
+        catch (UnknownHostException ex)
+        {
+            ex.printStackTrace();
+            System.exit(1);
+        }
+        catch (IOException ie)
+        {
+            ie.printStackTrace();
+            System.exit(1);
+        }
+        try{
+            System.out.println(buffer.readLine());
+           Scanner scan = new Scanner(System.in);
+            str = scan.nextLine();
+            printer.println(str);
+            while ((line = buffer.readLine()) != null)
+            {
+                System.out.println(line);
+                Thread.sleep(2000);
             }
-
-            // send client confirmation of request
-            out.println("Request was received");
-
-            // The name of the file to open.
-            String fileName = request;
-
-            File file = new File(fileName);
-
-            try {
-
-                Scanner sc = new Scanner(file);
-
-                while (sc.hasNextLine()) {
-                    out.println(sc);
-                }
-                sc.close();
-            }
-            catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            // This will reference one line at a time
-            String line = null;
-
-            try {
-                // FileReader reads text files in the default encoding.
-                FileReader fileReader = new FileReader(fileName);
-
-                // Always wrap FileReader in BufferedReader.
-                BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-                while((line = bufferedReader.readLine()) != null) {
-                    System.out.println(line);
-                }
-
-                System.out.println("The tranfer has been completed.");
-                // Always close files.
-                bufferedReader.close();
-            }
-            catch(FileNotFoundException ex) {
-                System.out.println("Unable to open file '" + fileName + "'");
-                sock.close();
-                return;
-            }
-            catch(IOException ex) {
-                System.out.println("Error reading file '" + fileName + "'");
-                sock.close();
-                return;
-                // Or we could just do this:
-                // ex.printStackTrace();
-            }
-
-            sock.close(); // close this connection, but not the server;
-        } catch (IOException ioe) {
-            System.out.println(ioe);
+            printer.close();
+            buffer.close();
+            sock.close();
+        }
+        catch (InterruptedException ie)
+        {
+            ie.printStackTrace();
+            System.exit(1);
         }
     }
-
 }
